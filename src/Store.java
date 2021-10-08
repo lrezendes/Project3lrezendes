@@ -4,6 +4,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Optional;
 import java.util.Scanner;
 
 /**
@@ -39,8 +40,8 @@ public class Store {
   {
     var comp152Inc = new Store();
     comp152Inc.runStore();
-  }
 
+  }
 
   /**
    */
@@ -48,7 +49,38 @@ public class Store {
   {
     var inputReader = new Scanner(System.in);
     loadStartingCustomers(inputReader);
+    while(true){ //the main run loop
+      printMainMenu();
+      var userChoice = inputReader.nextInt();
+      switch (userChoice){
+        case 1:
+          addCustomer(inputReader);
+          break;
+        case 2:
+          var selectedCustomer =selectCustomer(inputReader);
+          if(selectedCustomer.isPresent())
+            manageCustomer(selectedCustomer.get());
+          break;
+        case 3:
+          System.exit(0);
+        default:
+          System.out.println("\n%%%%%%Invalid selection, please choose one of the options from the menu%%%%%%\n");
+      }
+    }
   }
+
+  private static void printMainMenu() {
+    System.out.println("*****************************************************************************");
+    System.out.println("Welcome to the the 1980s Comp152 Store interface, what would you like to do?");
+    System.out.println("   [1] Add Customer");
+    System.out.println("   [2] Select Customer");
+    System.out.println("   [3] Exit the program");
+    System.out.println("*****************************************************************************");
+    System.out.print("Enter the number of your choice:");
+  }
+
+
+
 
   private void loadStartingCustomers(Scanner inputReader) throws IOException {
     Path fullPathName;
@@ -57,8 +89,8 @@ public class Store {
       System.out.print("Enter the name of the file to load customers:");
       filename = inputReader.nextLine();
       fullPathName = Paths.get(filename);
-      if (!Files.exists(fullPathName)){ //these three lines checks to see if the file exists, if not go do the loop
-        System.out.println("No file with that name, please try again....");//again
+      if (!Files.exists(fullPathName)){ //these three lines checks to see if the file exists, if not go
+        System.out.println("No file with that name, please try again....");//do the loop again
         continue;
       }
       else
@@ -66,7 +98,12 @@ public class Store {
     }
     //if we got here the file must be real
     var allLines = Files.readAllLines(fullPathName);
-
+    // now create customers for all of the lines in the file
+    for(var line: allLines){
+      var splitLine = line.split(",");
+      var currentCustomer = new Customer(splitLine[0], Integer.parseInt(splitLine[1]));
+      Customers.add(currentCustomer);
+    }
   }
 
 
@@ -82,16 +119,21 @@ public class Store {
 
   /**
    */
-  public void addCustomer()
+  public void addCustomer(Scanner inputReader)
   {
   }
 
 
   /**
    * @return       Customer
+   * the original UML called for returning a Customer Object rather than an Optional
+   * since I didn't know when I designed this if we would hit optional by then or not
+   * but I invited anyone who asked to use Optional if they wanted to
+   * either way is perfectly fine
    */
-  public Customer selectCustomer()
+  public Optional<Customer> selectCustomer(Scanner reader)
   {
+    return Optional.empty(); //placeholder
   }
 
 
