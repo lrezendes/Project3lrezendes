@@ -121,6 +121,14 @@ public class Store {
    */
   public void addCustomer(Scanner inputReader)
   {
+    //because we just came from a nextInt, there is an orphaned \n on the input stream eat it
+    inputReader.nextLine();
+    System.out.println("Adding Customer........");
+    System.out.print("Enter the new Customers name:");
+    var newName = inputReader.nextLine();
+    var newCustomer = new Customer(newName);
+    Customers.add(newCustomer);
+    System.out.println(".....Finished adding new Customer Record");
   }
 
 
@@ -133,7 +141,15 @@ public class Store {
    */
   public Optional<Customer> selectCustomer(Scanner reader)
   {
-    return Optional.empty(); //placeholder
+    System.out.print("Enter the ID of the customer to select:");
+    var enteredID = reader.nextInt();
+    for(var currentCustomer: Customers){
+      if(currentCustomer.getCustomerID()==enteredID)
+        return Optional.of(currentCustomer);
+    }
+    //If we looked through the whole list and didn't find that customer tell the user
+    System.out.println("==========================> No customer with customer ID:"+enteredID);
+    return Optional.empty();
   }
 
 
