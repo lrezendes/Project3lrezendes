@@ -3,7 +3,7 @@ import java.util.ArrayList;
 /**
  * Class Customer
  */
-public class Customer {
+public abstract class Customer {
 
   //
   // Fields
@@ -12,7 +12,6 @@ public class Customer {
   private String Name;
   private int customerID;
   private static int nextID = 5000; //all preloaded customers from the text file must have IDs lower than 5000
-  
   //
   // Constructors
   //
@@ -86,6 +85,18 @@ public class Customer {
   public String toString()
   {
     return "Customer Name: " + Name +"\nCustomerID: "+customerID + "\nWith "+Addresses.size() + " addresses on file";
+  }
+
+  public abstract double PayForOrder (ArrayList<MerchandiseItem> itemsInOrder);
+
+
+
+  public double PayOutstandingBalance(){
+    return 0.0;
+  }
+
+  public void arrangeDelivery(){
+    System.out.println(Name+ "deliver any time");
   }
 
 
